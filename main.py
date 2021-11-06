@@ -1,12 +1,10 @@
+import argparse
 import os
-
 from urllib.parse import urlparse
 
 import requests
-
 from dotenv import load_dotenv
 
-import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("user_link", help="link to check or make it bit")
 args = parser.parse_args()
