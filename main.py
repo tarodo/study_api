@@ -9,10 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("user_link", help="link to check or make it bit")
 args = parser.parse_args()
 
-load_dotenv()
-
 BIT_URL = 'https://api-ssl.bitly.com/v4'
-bit_token = os.getenv('BIT_TOKEN')
 
 
 def shorten_link(token: str, url: str) -> str:
@@ -51,6 +48,9 @@ def is_bitlink(token: str, url: str) -> bool:
 
 
 if __name__ == "__main__":
+    load_dotenv()
+    bit_token = os.getenv('BIT_TOKEN')
+
     user_url = args.user_link
 
     try:
