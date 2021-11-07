@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 BIT_URL = 'https://api-ssl.bitly.com/v4'
 
 
-def shorten_link(token: str, url: str) -> str:
+def create_bitlink(token: str, url: str) -> str:
     headers = {'Authorization': f'Bearer {token}'}
     payload = {
         "domain": "bit.ly",
@@ -21,7 +21,7 @@ def shorten_link(token: str, url: str) -> str:
     return bitlink_data['link']
 
 
-def base_bitlink_link(url: str) -> str:
+def get_base_bitlink(url: str) -> str:
     url_parts = urlparse(url)
     return f'{BIT_URL}/bitlinks/{url_parts.netloc}{url_parts.path}'
 
@@ -29,7 +29,7 @@ def base_bitlink_link(url: str) -> str:
 def count_clicks(token: str, url: str) -> int:
     headers = {'Authorization': f'Bearer {token}'}
     params = {'unit': 'day', 'units': '-1'}
-    response = requests.get(f'{base_bitlink_link(url)}/clicks/summary',
+    response = requests.get(f'{get_base_bitlink(url)}/clicks/summary',
                             headers=headers, params=params)
     response.raise_for_status()
     clicks_data: dict = response.json()
@@ -39,7 +39,7 @@ def count_clicks(token: str, url: str) -> int:
 
 def is_bitlink(token: str, url: str) -> bool:
     headers = {'Authorization': f'Bearer {token}'}
-    response = requests.get(base_bitlink_link(url), headers=headers)
+    response = requests.get(get_base_bitlink(url), headers=headers)
     return response.ok
 
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
             clicks_count = count_clicks(bit_token, user_url)
             print(f'Всего кликов: {clicks_count}')
         else:
-            bitlink = shorten_link(bit_token, user_url)
+            bitlink = create_bitlink(bit_token, user_url)
             print(f'Битлинк: {bitlink}')
     except requests.exceptions.HTTPError:
         print('Ошибка. Ваша ссылка не валидна')
