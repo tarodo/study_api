@@ -5,10 +5,6 @@ from urllib.parse import urlparse
 import requests
 from dotenv import load_dotenv
 
-parser = argparse.ArgumentParser()
-parser.add_argument("user_link", help="link to check or make it bit")
-args = parser.parse_args()
-
 BIT_URL = 'https://api-ssl.bitly.com/v4'
 
 
@@ -48,6 +44,10 @@ def is_bitlink(token: str, url: str) -> bool:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("user_link", help="link to check or make it bit")
+    args = parser.parse_args()
+
     load_dotenv()
     bit_token = os.getenv('BIT_TOKEN')
 
